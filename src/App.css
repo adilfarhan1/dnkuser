@@ -346,6 +346,14 @@ p {
   color: #ffffff;
 }
 
+.phoneInput .form-control {
+  background: transparent !important;
+  border: none !important;
+}
+.phoneInput .country-name {
+  color: #000000;
+}
+
 .footer-head {
   border-bottom: solid 1px #575769;
 }
@@ -420,5 +428,26 @@ p {
 }
 
 .dashboardHome {
-  background: #CE8745 !important;
+  margin-bottom: 1rem;
+}
+
+table {
+  border: 1px solid #575769;
+}
+table td {
+  border: 1px solid #575769;
+  padding: 0.5rem;
+}
+table th {
+  border: 1px solid #575769;
+}
+
+.sideBarDashboard .active {
+  background: #18A4A0;
+  border: none;
+}
+
+.map {
+  height: 100vh;
+  filter: grayscale(100%) invert(92%) contrast(83%);
 }/*# sourceMappingURL=App.css.map */

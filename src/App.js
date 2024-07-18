@@ -12,6 +12,7 @@ import AddTeam from './component/pages/dashboard/component/AddTeam';
 import AddProject from './component/pages/dashboard/component/AddProject';
 import ViewList from './component/pages/dashboard/component/ViewList';
 import DashboardHome from './component/pages/dashboard/component/DashboardHome';
+import Contact from './component/pages/contact/Contact';
 function App() {
   const Auth = () => {
     const login = localStorage.getItem('login')
@@ -25,6 +26,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/team' element={<Team />} />
+          <Route path='/contact' element={<Contact/>} />
           <Route path='/project-detail' element={<ProjectDetail />} />
         </Route>
         <Route element={<Auth />}>
