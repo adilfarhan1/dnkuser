@@ -29,14 +29,14 @@ function App() {
           <Route path='/contact' element={<Contact/>} />
           <Route path='/project-detail' element={<ProjectDetail />} />
         </Route>
-        <Route element={<Auth />}>
+        {/* <Route element={<Auth />}> */}
           <Route path='/dashboard' element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path='/dashboard/viewList' element={<ViewList />} />
             <Route path='/dashboard/addTeam' element={<AddTeam />} />
             <Route path='/dashboard/addproject'  element={<AddProject />} />
           </Route>
-        </Route>
+        {/* </Route> */}
       </Routes>
     </BrowserRouter>
   );
