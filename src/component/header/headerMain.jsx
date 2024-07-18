@@ -41,6 +41,13 @@ export const HeaderMain = () => {
    const goToTeam = () => {
      navigate("/team");
      setNav(!nav);
+  };
+  const goToContactHead = () => {
+    navigate("/contact")
+  }
+   const goToContact = () => {
+     navigate("/contact");
+     setNav(!nav);
    };
 
     return (
@@ -107,7 +114,10 @@ export const HeaderMain = () => {
                     </p>
                     <span class="absolute bottom-0 left-0 w-full h-0.5 bg-[#CE8745] rounded origin-bottom-right transform transition duration-200 ease-out scale-x-0 group-hover:scale-x-100 group-hover:origin-bottom-left"></span>
                   </li>
-                  <li className="relative inline-flex items-center justify-center group m-2">
+                  <li
+                    onClick={goToContactHead}
+                    className="relative inline-flex items-center justify-center group m-2"
+                  >
                     <p className="group-hover:text-[#CE8745] transition duration-200 ease-out">
                       Contact
                     </p>
@@ -183,7 +193,10 @@ export const HeaderMain = () => {
                 Team
               </p>
             </li>
-            <li className="text-white p-3 cursor-pointer group hover:bg-[#0F0F1A]">
+            <li
+              onClick={goToContact}
+              className="text-white p-3 cursor-pointer group hover:bg-[#0F0F1A]"
+            >
               <p className="transform group-hover:translate-x-2 transition-transform ease-in duration-200 text-sm font-semibold">
                 Contact
               </p>
