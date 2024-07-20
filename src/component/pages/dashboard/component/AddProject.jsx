@@ -67,7 +67,7 @@ export const AddProject = (props) => {
     if (props.mode === "update" && props.user_id) {
       fetchProjectDetails(props.user_id);
     }
-  }, [props.mode, props.user_id])
+  }, [props.mode, props.user_id]);
 
   const fetchProjectDetails = async (id) => {
     try {
@@ -81,16 +81,17 @@ export const AddProject = (props) => {
         gallary2: response.data.imageUrl?.gallary2 || null,
         gallary3: response.data.imageUrl?.gallary3 || null,
       });
-    } catch(err) {
-      console.error('Faild to fetch project details:', err);
+    } catch (err) {
+      console.error("Faild to fetch project details:", err);
     }
-  }
+  };
 
  
 
-   const handleFileInput = (e, field) => {
-     const file = e.target.files[0];
-     setCreateProject((createProject) => ({ ...createProject, [field]: file }));
+  const handleFileInput = (e) => {
+    let field = e?.target?.name;
+    const file = e.target.files[0]
+    setCreateProject((createProject) => ({ ...createProject, [field]: file }))
      
      setImageUrls((prevState) => ({
        ...prevState,
@@ -105,26 +106,27 @@ export const AddProject = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const submitData = { ...createProject }
+      const submitData = { ...createProject };
       const formdata = new FormData();
-      formdata.append("image", submitData.image)
-        let response;
-        if (props.mode === 'update' && createProject._id) {
-          // For update, ensure that the _id field is included
-          submitData._id = createProject.id;
-          response = await putProjectList(createProject._id, submitData);
-        } else {
-          // For create, remove the _id field to allow MongoDB to generate a new one
-          delete submitData._id;
-          response = await postProjectList(submitData);
-        }
-        if (response.success) {
-          Swal.fire("Success", "Successfully added added/updated", "success");
-          // handleReset()
-          setSubmit(!submit)
-        } else {
-          Swal.fire("Failed", "Failed to added/updated project", "error");
-        }
+      for (const [key, value] of Object.entries(submitData))
+        formdata.append(key, value);
+      let response;
+      if (props.mode === "update" && createProject._id) {
+        // For update, ensure that the _id field is included
+        submitData._id = createProject.id;
+        response = await putProjectList(createProject._id, formdata);
+      } else {
+        // For create, remove the _id field to allow MongoDB to generate a new one
+        delete submitData._id;
+        response = await postProjectList(formdata);
+      }
+      if (response.success) {
+        Swal.fire("Success", "Successfully added/updated", "success");
+        // handleReset()
+        setSubmit(!submit);
+      } else {
+        Swal.fire("Failed", "Failed to added/updated project", "error");
+      }
       } catch (err) {
         console.log(err)
         Swal.fire("Failed", "Failed to added/updated project", "error");
@@ -142,7 +144,7 @@ export const AddProject = (props) => {
       gallary2: null,
       gallary3: null,
     });
-  }
+  };
 
 
   return (
@@ -158,10 +160,10 @@ export const AddProject = (props) => {
       >
         <div className="w-fit mb-3">
           <label>Thumbnail</label>
-          <label for="userIcon" className="cursor-pointer">
+          <label htmlFor="thumbnail" className="cursor-pointer">
             <img
               className="w-[380px] h-[266px]"
-              src={imageUrls.image || projectImage}
+              src={imageUrls?.thumbnail || projectImage}
               alt="user-icon"
             />
           </label>
@@ -170,7 +172,7 @@ export const AddProject = (props) => {
             placeholder="choose an thumbnail to upload"
             className=""
             name="thumbnail"
-            onChange={handleChange}
+            onChange={handleFileInput}
             id="thumbnail"
           />
         </div>
@@ -233,18 +235,17 @@ export const AddProject = (props) => {
         <div className="flex gap-3 mb-4">
           <div className="w-fit mb-3">
             <label>DLD Permit Number</label>
-            <label for="userIcon" className="cursor-pointer">
+            <label htmlFor="dldqr" className="cursor-pointer">
               <img
                 className="w-[120px] h-[120px]"
-                src={imageUrls.dld || qrcode}
+                src={imageUrls?.dldimage || qrcode}
                 alt="qr-icon"
               />
             </label>
             <input
               type="file"
-              className="hidden"
-              name="dld"
-              onChange={(e) => handleFileInput(e, "dld")}
+              className=""
+              onChange={handleFileInput}
               id="dldcode"
             />
           </div>
@@ -253,17 +254,17 @@ export const AddProject = (props) => {
         <div className="flex gap-3 mb-4">
           <div className="w-fit mb-3">
             <label>Cover Image</label>
-            <label for="userIcon" className="cursor-pointer">
+            <label htmlFor="coverImage" className="cursor-pointer">
               <img
                 className="w-[700px] h-[266px]"
-                src={imageUrls.coverimage || cvrImage}
+                src={imageUrls?.coverimage || cvrImage}
                 alt="cover image"
               />
             </label>
             <input
               type="file"
-              className="hidden"
-              onChange={(e) => handleFileInput(e, "coverimage")}
+              className=""
+              onChange={handleFileInput}
               id="coverImage"
             />
           </div>
@@ -292,17 +293,17 @@ export const AddProject = (props) => {
           <div className="flex gap-3 mb-4">
             <div className="w-fit mb-3">
               <label>Gallary Image 1</label>
-              <label for="userIcon" className="cursor-pointer">
+              <label htmlFor="Gallary" className="cursor-pointer">
                 <img
                   className="w-[380px] h-auto"
-                  src={imageUrls.gallary1 || projectImage}
+                  src={imageUrls?.gallary1 || projectImage}
                   alt="gallary image"
                 />
               </label>
               <input
                 type="file"
-                className="hidden"
-                onChange={(e) => handleFileInput(e, "gallary1")}
+                className=""
+                onChange={handleFileInput}
                 id="gallaryImage1"
               />
             </div>
@@ -310,17 +311,17 @@ export const AddProject = (props) => {
           <div className="flex gap-3 mb-4">
             <div className="w-fit mb-3">
               <label>Gallary Image 2</label>
-              <label for="userIcon" className="cursor-pointer">
+              <label htmlFor="gallary" className="cursor-pointer">
                 <img
                   className="w-[380px] h-auto"
-                  src={imageUrls.gallary2 || projectImage}
+                  src={imageUrls?.gallary2 || projectImage}
                   alt="gallary image"
                 />
               </label>
               <input
                 type="file"
-                className="hidden"
-                onChange={(e) => handleFileInput(e, "gallary2")}
+                className=""
+                onChange={ handleFileInput }
                 id="gallaryImage2"
               />
             </div>
@@ -328,17 +329,17 @@ export const AddProject = (props) => {
           <div className="flex gap-3 mb-4">
             <div className="w-fit mb-3">
               <label>Gallary Image 3</label>
-              <label for="userIcon" className="cursor-pointer">
+              <label htmlFor="gallary" className="cursor-pointer">
                 <img
                   className="w-[380px] h-auto"
-                  src={imageUrls.gallary3 || projectImage}
+                  src={imageUrls?.gallary3 || projectImage}
                   alt="gallary image"
                 />
               </label>
               <input
                 type="file"
-                className="hidden"
-                onChange={(e) => handleFileInput(e, "gallary3")}
+                className=""
+                onChange={ handleFileInput }
                 id="gallaryImage3"
               />
             </div>
@@ -398,4 +399,4 @@ export const AddProject = (props) => {
   );
 };
 
-export default AddProject
+export default AddProject;

@@ -3,11 +3,15 @@ import axiosPrivate from "../url/axios";
 export const useProjectServices = () => {
 
     const postProjectList = async (formdata) => {
-        const response = await axiosPrivate.post('/task/add-task', formdata)
+        const response = await axiosPrivate.post('/task/add-task', formdata, {
+            headers:{"Content-Type":'multipart/from-data'}
+        })
         return response.data
     }
     const putProjectList = async (id, data) => {
-        const response = await axiosPrivate.put('/api/projects/' + id, data)
+        const response = await axiosPrivate.put('/api/projects/' + id, data, {
+            headers: { "Content-Type":'multipart/from-data'}
+        })
         return response.data
     }
     const getProjectList = async () => {
