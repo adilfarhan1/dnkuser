@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import ViewList from './ViewList';
+import { Navigate } from 'react-router-dom';
 
 export const DashboardHome = () => {
     const [params, setParams] = useState('allProject')
@@ -7,42 +8,47 @@ export const DashboardHome = () => {
     <div className="p-3">
       <div className="dashboardHome flex items-center gap-3 justify-start">
         <button
-                  onClick={() => setParams("allProject")}
-                  className={`${params == "allProject"&&"active"} site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
+          onClick={() => setParams("allProject")}
+          className={`${
+            params == "allProject" && "active"
+          } site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
         >
           All Project
         </button>
         <button
-          onClick={() => setParams("allTeam")}
-          className={`${params == "allTeam"&&"active"} site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
-        >
-          All Team
-        </button>
-        <button
-          onClick={() => setParams("offPlan")}
-          className={`${params == "offPlan"&&"active"} site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
+          onClick={() => setParams("off-plan")}
+          className={`${
+            params == "off-plan" && "active"
+          } site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
         >
           Off-Plan
         </button>
         <button
           onClick={() => setParams("buy")}
-          className={`${params == "buy"&&"active"} site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
+          className={`${
+            params == "buy" && "active"
+          } site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
         >
           Buy
         </button>
         <button
           onClick={() => setParams("sell")}
-          className={`${params == "sell"&&"active"} site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
+          className={`${
+            params == "sell" && "active"
+          } site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
         >
           Sell
         </button>
         <button
           onClick={() => setParams("rent")}
-          className={`${params == "rent"&&"active"} site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
+          className={`${
+            params == "rent" && "active"
+          } site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
         >
           Rent
         </button>
       </div>
+      {/* {location.pathname == '/dashboard/'} */}
       <ViewList {...{ params }} />
     </div>
   );

@@ -28,6 +28,14 @@ export const DashboardLayout = () => {
               Dashboard
             </button>
             <button
+              onClick={() => navigate("/dashboard/team")}
+              className={`${
+                location.pathname == "/dashboard/team" && "active"
+              } site-sub-btn text-left bg-[#0F2C45] w-full !border-[#1C1D22]`}
+            >
+              All Team
+            </button>
+            <button
               onClick={() => navigate("/dashboard/addProject")}
               className={`${
                 location.pathname == "/dashboard/addProject" && "active"

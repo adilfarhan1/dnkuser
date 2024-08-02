@@ -13,6 +13,8 @@ import AddProject from './component/pages/dashboard/component/AddProject';
 import ViewList from './component/pages/dashboard/component/ViewList';
 import DashboardHome from './component/pages/dashboard/component/DashboardHome';
 import Contact from './component/pages/contact/Contact';
+import TeamViewList from './component/pages/dashboard/component/TeamViewList';
+import TeamDetail from './component/pages/team/TeamDetail';
 function App() {
   const Auth = () => {
     const login = localStorage.getItem('login')
@@ -28,13 +30,15 @@ function App() {
           <Route path='/team' element={<Team />} />
           <Route path='/contact' element={<Contact/>} />
           <Route path='/project-detail' element={<ProjectDetail />} />
+          <Route path='/team-detail/:id' element={<TeamDetail />} />
         </Route>
         <Route element={<Auth />}>
           <Route path='/dashboard' element={<DashboardLayout />}>
             <Route index element={<DashboardHome />} />
             <Route path='/dashboard/viewList' element={<ViewList />} />
             <Route path='/dashboard/addTeam' element={<AddTeam />} />
-            <Route path='/dashboard/addproject'  element={<AddProject />} />
+            <Route path='/dashboard/addproject' element={<AddProject />} />
+            <Route path='/dashboard/team' element={<TeamViewList />} />
           </Route>
         </Route>
       </Routes>

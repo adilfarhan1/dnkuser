@@ -12,8 +12,12 @@ export const ViewList = (props) => {
     const { getProjectList, putProjectList } = useProjectServices()
 
     useEffect(() => {
-        let tempList = projectList
-        setSearchedList(tempList)
+      let tempList = projectList
+      if (params !== 'allProject' && params) {
+        tempList = projectList.filter((data) => {
+          return data.status == params;
+        });
+      } setSearchedList(tempList);
     }, [params, projectList])
 
     useEffect(() => {

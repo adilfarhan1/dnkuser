@@ -20,7 +20,7 @@ export const TeamViewList = (props) => {
         getData()
     }, [submit])
 
-    const location = useLocation;
+    const location = useLocation();
     
     const getData = async () => {
         try {
@@ -31,8 +31,8 @@ export const TeamViewList = (props) => {
         }
     }
 
-    const handleEdit = (data) => {
-        setCreateTeam({
+  const handleEdit = (data) => {
+      setCreateTeam({
           id: data._id,
           image: data.image,
           name: data.name,
@@ -49,12 +49,12 @@ export const TeamViewList = (props) => {
 
   return (
     <div>
-      <table className="w-full border overflow-auto">
+      <table className="w-full border overflow-auto my-4 ">
         <thead>
           <tr>
             <th>Name</th>
             <th>Position</th>
-            <th>specialization</th>
+            <th>Specialization</th>
             <th>phone</th>
             {location.pathname == "/dashboard/addTeam" && <th></th>}
             {location.pathname == "/dashboard/addTeam" && <th></th>}
@@ -79,7 +79,7 @@ export const TeamViewList = (props) => {
                 {location.pathname == "/dashboard/addTeam" && (
                   <td className="text-center">
                     <MdDelete
-                    //   onClick={() => handleEdit(data)}
+                      //   onClick={() => handleEdit(data)}
                       className="text-[1rem] text-center m-auto cursor-pointer"
                     />
                   </td>

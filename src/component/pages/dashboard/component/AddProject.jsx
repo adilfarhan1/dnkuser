@@ -39,8 +39,8 @@ export const AddProject = (props) => {
     dec4: "",
     status: "",
   };
-  const [createProject, setCreateProject] = useState(initialState);
 
+  const [createProject, setCreateProject] = useState(initialState);
   const [imageUrls, setImageUrls] = useState({
     image: null,
     dld: null,
@@ -176,6 +176,21 @@ export const AddProject = (props) => {
             id="thumbnail"
           />
         </div>
+        <label>Status</label>
+        <select
+          placeholder="Status"
+          onChange={handleChange}
+          name="status"
+          required
+          value={createProject.status || ""}
+          type="select"
+          class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+        >
+          <option value={"buy"}>Buy</option>
+          <option value={"off-plan"}>Off-Plan</option>
+          <option value={"sell"}>Sell</option>
+          <option value={"rent"}>Rent</option>
+        </select>
 
         <label>Project Name</label>
         <input
@@ -321,7 +336,7 @@ export const AddProject = (props) => {
               <input
                 type="file"
                 className=""
-                onChange={ handleFileInput }
+                onChange={handleFileInput}
                 id="gallaryImage2"
               />
             </div>
@@ -339,7 +354,7 @@ export const AddProject = (props) => {
               <input
                 type="file"
                 className=""
-                onChange={ handleFileInput }
+                onChange={handleFileInput}
                 id="gallaryImage3"
               />
             </div>
