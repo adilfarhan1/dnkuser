@@ -71,3 +71,12 @@ header.sticky{
     // }
 }
 
+.activeHead{
+    p{
+        color:  #CE8745 !important;
+    }
+    span{
+        transform: scaleX(1);
+    }
+}
+

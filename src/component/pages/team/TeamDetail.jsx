@@ -14,6 +14,7 @@ import { URL } from '../../../url/axios';
 
 export const TeamDetail = () => {
   const { id } = useParams();
+  // const { team } = location.state;
   const [teamData, setTeamData] = useState(null);
   const [loading, setLoading] = useState(true); // Add a loading state
   const [error, setError] = useState(null); // Add an error state
@@ -21,18 +22,20 @@ export const TeamDetail = () => {
 
   useEffect(() => {
     console.log("Fetched ID from useParams:", id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     fetchTeam();
   }, [id]);
 
   const fetchTeam = async () => {
     try {
-      const response = await getTeamById();
+      const response = await getTeamById(id);
       console.log("API Response:", response); // Log the API response
 
       if (response.success) {
-        const teamData = response.data.find(
-          (user) => user._id === id
-        );
+        // const teamData = response.data.find(
+        //   (user) => user.id === id
+        // );
+        const teamData = response.data;
         console.log("Matching Team Data:", teamData); // Log the matched team data
 
         if (teamData) {
@@ -47,17 +50,21 @@ export const TeamDetail = () => {
       console.error("Failed to fetch team details", err);
       setError("An error occurred while fetching team details.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>; // Loading indicator
-  }
+   if (loading) {
+     return (
+       <div className="bg-[#040406] text-center">
+         <p className="m-auto loader !w-[24px] !h-[24px]"></p>
+       </div>
+     ); // Loading indicator
+   }
 
-  if (error) {
-    return <div>{error}</div>; // Display error message
-  }
+   if (error) {
+     return <div>{error}</div>; // Display error message
+   }
 
   return (
     <div>
@@ -73,30 +80,46 @@ export const TeamDetail = () => {
               <h1 className="banner-h1 mb-0">{teamData?.name}</h1>
               <p className="mb-2">{teamData?.position}</p>
               <div className="w-[100%] h-[1px] bg-white mb-3"></div>
-              <div className="flex gap-5">
-                <p className="mb-0">Experience:</p>
-                <p className="mb-0">{teamData?.experience}</p>
+              <div className="flex gap-4">
+                <div>
+                  <p className="mb-0 text-[#ffffff]">Experience:</p>
+                  <p className="mb-0 text-[#ffffff]">Specialization:</p>
+                  <p className="mb-0 text-[#ffffff]">Language:</p>
+                </div>
+
+                <div className="col-span-3">
+                  <p className="mb-0">{teamData?.experience}</p>
+                  <p className="mb-0">{teamData?.specialization}</p>
+                  <p className="mb-0">{teamData?.language}</p>
+                </div>
               </div>
-              <div className="flex gap-5">
-                <p className="mb-0">Specialization:</p>
-                <p className="mb-0">{teamData?.specialization}</p>
-              </div>
-              <div className="flex gap-5">
-                <p className="mb-0">Language:</p>
-                <p className="mb-0">{teamData?.language}</p>
-              </div>
+
               <div className="my-2 flex gap-4">
-                <button className="border px-12 py-2 rounded text-[#fff] hover:text-[#000] hover:bg-[#fff] duration-500">
+                <a
+                  href={`mailto:${teamData?.email}`}
+                  className="border px-12 py-2 rounded text-[#fff] hover:text-[#000] hover:bg-[#fff] duration-500"
+                >
                   <MdEmail className="text-[1rem] md:text-[1.5rem]" />
-                </button>
-                <button className="border px-12 py-2 rounded text-[#fff] hover:text-[#000] hover:bg-[#fff] duration-500">
+                </a>
+                <a
+                  href={`tel:${teamData?.phone}`}
+                  className="border px-12 py-2 rounded text-[#fff] hover:text-[#000] hover:bg-[#fff] duration-500"
+                >
                   <MdCall className="text-[1rem] md:text-[1.5rem]" />
-                </button>
-                <button className="border px-12 py-2 rounded text-[#fff] hover:text-[#000] hover:bg-[#fff] duration-500">
+                </a>
+                <a
+                  href={`https://wa.me/${teamData.phone.replace(
+                    /\s+/g,
+                    ""
+                  )}?text=Hello,${teamData.name}%20send%20more%20details`}
+                  className="border px-12 py-2 rounded text-[#fff] hover:text-[#000] hover:bg-[#fff] duration-500"
+                >
                   <IoLogoWhatsapp className="text-[1rem] md:text-[1.5rem]" />
-                </button>
+                </a>
               </div>
-              <p className="text-justify">{teamData?.about}</p>
+              <p className="text-justify">{teamData?.aboutpara1}</p>
+              <p className="text-justify">{teamData?.aboutpara2}</p>
+              <p className="text-justify">{teamData?.aboutpara3}</p>
             </div>
           </div>
         </div>

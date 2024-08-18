@@ -1,24 +1,55 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick'
-import dann from "../../../../assets/cover-team/Dan.png"
-import waseem from "../../../../assets/cover-team/waseem.png";
-import Sameera from "../../../../assets/cover-team/Sameera.png";
-import asad from "../../../../assets/cover-team/asad.png";
-import velina from "../../../../assets/cover-team/velina.png";
-import vivek from "../../../../assets/cover-team/vivek.png";
-import Nandini from "../../../../assets/cover-team/Nandini.png";
-import christopher from "../../../../assets/cover-team/christopher.png";
-import ashik from "../../../../assets/cover-team/ashik.png";
-import saba from "../../../../assets/cover-team/saba.png";
-import mansi from "../../../../assets/cover-team/mansi.png";
-import adilfarhan from "../../../../assets/cover-team/adilfarhan.png";
-import monia from "../../../../assets/cover-team/monia.png";
-import krati from "../../../../assets/cover-team/krati.png";
-import sumaiya from "../../../../assets/cover-team/sumaiya.png";
-import sattar from "../../../../assets/cover-team/sattar.png";
-import shahid from "../../../../assets/cover-team/shahid.png";
+import coverUser from "../../../../assets/icons/coverUser.png"
+import { userTeamServices } from '../../../../services/teamServices';
+import { useNavigate } from 'react-router-dom';
+import { URL } from '../../../../url/axios';
 
 export const AboutBanner = () => {
+  const [searchedList, setSearchedList] = useState([]);
+  const [teamList, setTeamList] = useState([]);
+  const [loading, setLoading] = useState();
+  const [error, setError] = useState();
+  const { getTeamPublicList } = userTeamServices();
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    let tempList = teamList;
+    setSearchedList(tempList);
+  }, [teamList])
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+  const getData = async () => {
+    try {
+      const response = await getTeamPublicList();
+      if (response.success) {
+        setTeamList(response.data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch team list", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
+  if (loading) {
+    return (
+      <div className="bg-[#040406] text-center">
+        <p className="m-auto loader !w-[24px] !h-[24px]"></p>
+      </div>
+    ); // Loading indicator
+  }
+
+  if (error) {
+    return <div>{error}</div>; // Display error message
+  }
+  
+
     var settings = {
       dots: false,
       arrows: false,
@@ -56,74 +87,18 @@ export const AboutBanner = () => {
         </p>
       </div>
       <Slider {...settings}>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={dann} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={waseem} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={Sameera} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={asad} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={velina} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={vivek} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={Nandini} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={christopher} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={ashik} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={saba} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={mansi} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={adilfarhan} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={monia} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={krati} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={sumaiya} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={sattar} alt="cover img" />
-        </div>
-        <div className="relative">
-          <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
-          <img src={shahid} alt="cover img" />
-        </div>
+        {searchedList.length > 0 ? (
+          searchedList.map((data) => (
+            <div className="relative">
+              <div className="bg-[#050612] opacity-60 w-full absolute top-0 left-0 h-full hover:bg-transparent ease-in-out duration-1000"></div>
+              <img src={data.sliderimg? URL + data.sliderimg : coverUser} alt="cover img" />
+            </div>
+          ))
+        ) : (
+          <div className="bg-[#040406] text-center">
+            <p className="m-auto loader !w-[24px] !h-[24px]"></p>
+          </div>
+        )}
       </Slider>
     </div>
   );

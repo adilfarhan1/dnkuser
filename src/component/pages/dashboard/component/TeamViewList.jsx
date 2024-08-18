@@ -9,7 +9,7 @@ export const TeamViewList = (props) => {
   const { createTeam, setCreateTeam, submit, params } = props;
   const [teamList, setTeamList] = useState([]);
   const [searchedList, setSearchedList] = useState([]);
-    const { getTeamList, putTeamList } = userTeamServices();
+  const { getTeamList, putTeamList, deleteTeamList } = userTeamServices();
     
     useEffect(() => {
         let tempList = teamList
@@ -33,19 +33,36 @@ export const TeamViewList = (props) => {
 
   const handleEdit = (data) => {
       setCreateTeam({
-          id: data._id,
-          image: data.image,
-          name: data.name,
-          position: data.position,
-          experience: data.experience,
-          specialization: data.specialization,
-          language: data.language,
-          email: data.email,
-          phone: data.phone,
-          whatsapp: data.whatsapp,
-          about: data.about,
-        });
+        id: data._id,
+        image: data.image,
+        sliderimg: data.sliderimg,
+        name: data.name,
+        position: data.position,
+        experience: data.experience,
+        specialization: data.specialization,
+        language: data.language,
+        email: data.email,
+        phone: data.phone,
+        department: data.department,
+        aboutpara1: data.aboutpara1,
+        aboutpara2: data.aboutpara2,
+        aboutpara3: data.aboutpara3,
+      });
+  }
+  
+  const handleDelete = async (id)=> {
+    try {
+      const response = await deleteTeamList(id);
+      if (response.success) {
+        setTeamList((prevList) => prevList.filter((item) => item._id !== id))
+      } else {
+        console.error('Failed to delete team member')
+      }
+    } catch (err) {
+      console.error('Error deleting team member:', err)
     }
+
+  }
 
   return (
     <div>
@@ -54,6 +71,7 @@ export const TeamViewList = (props) => {
           <tr>
             <th>Name</th>
             <th>Position</th>
+            <th>Department</th>
             <th>Specialization</th>
             <th>phone</th>
             {location.pathname == "/dashboard/addTeam" && <th></th>}
@@ -66,6 +84,7 @@ export const TeamViewList = (props) => {
               <tr>
                 <td>{data.name}</td>
                 <td>{data.position}</td>
+                <td>{data.department}</td>
                 <td>{data.specialization}</td>
                 <td>{data.phone}</td>
                 {location.pathname == "/dashboard/addTeam" && (
@@ -79,7 +98,7 @@ export const TeamViewList = (props) => {
                 {location.pathname == "/dashboard/addTeam" && (
                   <td className="text-center">
                     <MdDelete
-                      //   onClick={() => handleEdit(data)}
+                      onClick={() => handleDelete(data._id)}
                       className="text-[1rem] text-center m-auto cursor-pointer"
                     />
                   </td>
@@ -88,7 +107,7 @@ export const TeamViewList = (props) => {
             ))
           ) : (
             <div className="flex justify-center">
-              <p className="text-center m-auto">Not task created yet</p>
+              <p className="text-center m-auto">No task created yet</p>
             </div>
           )}
         </tbody>

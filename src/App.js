@@ -15,6 +15,17 @@ import DashboardHome from './component/pages/dashboard/component/DashboardHome';
 import Contact from './component/pages/contact/Contact';
 import TeamViewList from './component/pages/dashboard/component/TeamViewList';
 import TeamDetail from './component/pages/team/TeamDetail';
+import BuyProject from './component/pages/projectDetail/BuyProject';
+import OurServices from './component/pages/ourService/OurServices';
+import CareerPage from './component/pages/career/CareerPage';
+import ScrollViewTop from './hooks/ScrollViewTop';
+import OffPlanProject from './component/pages/projectDetail/OffPlanProject';
+import AddAdImage from './component/pages/dashboard/component/AddAdImage';
+import SellProject from './component/pages/projectDetail/SellProject';
+import ReviewAdd from './component/pages/dashboard/component/ReviewAdd';
+import AddPartner from './component/pages/dashboard/component/AddPartner';
+
+
 function App() {
   const Auth = () => {
     const login = localStorage.getItem('login')
@@ -22,6 +33,7 @@ function App() {
   }
   return (
     <BrowserRouter>
+      <ScrollViewTop />
       <Routes>
         <Route path='/admin' element={<Admin />} />
         <Route path='/' element={<Layout />}>
@@ -29,8 +41,13 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/team' element={<Team />} />
           <Route path='/contact' element={<Contact/>} />
-          <Route path='/project-detail' element={<ProjectDetail />} />
+          <Route path='/project-detail/:id' element={<ProjectDetail />} />
           <Route path='/team-detail/:id' element={<TeamDetail />} />
+          <Route path='/buy-project' element={<BuyProject />} />
+          <Route path='/off-plan-project' element={<OffPlanProject />} />
+          <Route path='/sell-project' element={<SellProject />} />
+          <Route path='/services' element={<OurServices />} />
+          <Route path='/careers' element={<CareerPage />} />
         </Route>
         <Route element={<Auth />}>
           <Route path='/dashboard' element={<DashboardLayout />}>
@@ -39,6 +56,9 @@ function App() {
             <Route path='/dashboard/addTeam' element={<AddTeam />} />
             <Route path='/dashboard/addproject' element={<AddProject />} />
             <Route path='/dashboard/team' element={<TeamViewList />} />
+            <Route path='/dashboard/ad' element={<AddAdImage />} />
+            <Route path='/dashboard/review' element={<ReviewAdd />} />
+            <Route path='/dashboard/partner' element={<AddPartner />} />
           </Route>
         </Route>
       </Routes>

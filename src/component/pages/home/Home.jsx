@@ -9,25 +9,29 @@ import OurProcess from './components/OurProcess';
 import ReviewSection from './components/ReviewSection';
 import PartnerSection from './components/PartnerSection';
 import TalkSection from './components/TalkSection';
-import FooterSection from '../../footer/FooterSection';
+import { useEffect } from 'react';
 
-export const Home =()=> {
-    return (
+export const Home = () => {
+  // Scroll to the top
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  return (
+    <div>
+      <BannerHome />
       <div>
-        <BannerHome />
-        <div>
-          <AboutSection />
-          <FeatureProject />
-          <ServiceSection />
-          <TeamSection />
-          <Reasons />
-          <OurProcess />
-          <ReviewSection />
-          <PartnerSection />
-          <TalkSection />
-        </div>
+        <AboutSection />
+        <FeatureProject />
+        <ServiceSection />
+        <TeamSection />
+        <Reasons />
+        <OurProcess />
+        <ReviewSection />
+        <PartnerSection />
+        <TalkSection />
       </div>
-    );
+    </div>
+  );
 }
 
 export default Home

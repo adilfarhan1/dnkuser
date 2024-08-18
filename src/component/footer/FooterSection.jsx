@@ -9,10 +9,12 @@ import { IoIosCall } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import { MdLocationOn } from "react-icons/md";
 import { IoIosArrowUp } from "react-icons/io";
+import { useNavigate } from 'react-router-dom';
 
 export const FooterSection = () => {
-
   const [showButton, setShowButton] = useState();
+  const [nav, setNav] = useState(true);
+  const navigate = useNavigate();
 
   // const toggleVisible = () => {
   //   const scrolled = document.documentElement.scrollTop;
@@ -22,7 +24,7 @@ export const FooterSection = () => {
   //     setVisible(false)
   //   }
   // }
-  
+
   // const scrollTop = () => {
   //   window.scrollTo({
   //     top: 0,
@@ -31,26 +33,58 @@ export const FooterSection = () => {
   // }
 
   // window.addEventListener('scroll', toggleVisible)
-  
+
+  //navigation
+  const goToAboutHead = () => {
+    navigate("/about");
+  };
+
+  const goToTeam = () => {
+    navigate("/team");
+    setNav(!nav);
+  };
+  const goToContactHead = () => {
+    navigate("/contact");
+  };
+ 
+
+  const goToCareers = () => {
+    navigate("/careers")
+  }
+
+  const goToServices = () => {
+    navigate("/services")
+  }
+
+  const goToOffPlan = () => {
+    navigate("/off-plan-project");
+  };
+
+  const goToBuy = () => {
+    navigate("/buy-project");
+  };
+
+  const goToSell = () => {
+    navigate("/sell-project");
+  };
+
   useEffect(() => {
     const handleScrollButtonVisiblity = () => {
       window.scrollY > 300 ? setShowButton(true) : setShowButton(false);
-    }
-    window.addEventListener('scroll', handleScrollButtonVisiblity)
-    
+    };
+    window.addEventListener("scroll", handleScrollButtonVisiblity);
+
     return () => {
-      window.removeEventListener('scroll', handleScrollButtonVisiblity);
-    }
+      window.removeEventListener("scroll", handleScrollButtonVisiblity);
+    };
   }, []);
 
   const handleScrollTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
-    })
-  }
-
- 
+      behavior: "smooth",
+    });
+  };
 
   return (
     <footer>
@@ -61,27 +95,39 @@ export const FooterSection = () => {
             <div>
               <ul className="social-links">
                 <li>
-                  <a href="">
+                  <a
+                    href="https://www.facebook.com/dnkrealestate1/"
+                    target="_blank"
+                  >
                     <GrFacebookOption />
                   </a>
                 </li>
                 <li>
-                  <a href="">
+                  <a href="https://www.instagram.com/dnk_re/" target="_blank">
                     <FaInstagram />
                   </a>
                 </li>
                 <li>
-                  <a href="">
+                  <a
+                    href="https://www.youtube.com/channel/UCKH7d3Sx2dkfb4pEXXaMpFA"
+                    target="_blank"
+                  >
                     <FaYoutube />
                   </a>
                 </li>
                 <li>
-                  <a href="">
+                  <a
+                    href="https://www.linkedin.com/company/dnkrealestate/"
+                    target="_blank"
+                  >
                     <FaLinkedin />
                   </a>
                 </li>
                 <li>
-                  <a href="">
+                  <a
+                    href="https://wa.me/+971555769195?text=Hello,"
+                    target="_blank"
+                  >
                     <IoLogoWhatsapp />
                   </a>
                 </li>
@@ -95,42 +141,60 @@ export const FooterSection = () => {
                   <h5>Popular Search</h5>
                 </li>
                 <li>
-                  <a href="">Property for Rent</a>
+                  <a className="cursor-pointer" onClick={goToOffPlan}>
+                    Off Plan Properties
+                  </a>
                 </li>
                 <li>
-                  <a href="">Property for Sale</a>
+                  <a className="cursor-pointer" onClick={goToBuy}>
+                    Property for Sale
+                  </a>
                 </li>
                 <li>
-                  <a href="">Off Plan Properties</a>
+                  <a className="cursor-pointer" onClick={goToSell}>
+                    Property for Sell
+                  </a>
                 </li>
-                <li>
-                  <a href="">Property Management</a>
-                </li>
+                {/* <li>
+                  <a href="" className="cursor-pointer" onClick={goToAboutHead}>
+                    Property Management
+                  </a>
+                </li> */}
               </ul>
             </div>
-            <div>
+            <div className="col-span-2">
               <ul>
                 <li>
                   <h5>Quick Links</h5>
                 </li>
                 <li>
-                  <a href="">About</a>
+                  <a className="cursor-pointer" onClick={goToAboutHead}>
+                    About
+                  </a>
                 </li>
                 <li>
-                  <a href="">Services</a>
+                  <a onClick={goToServices} className="cursor-pointer">
+                    Services
+                  </a>
                 </li>
                 <li>
-                  <a href="">Meet The Team</a>
+                  <a className="cursor-pointer" onClick={goToTeam}>
+                    Meet The Team
+                  </a>
                 </li>
                 <li>
-                  <a href="">Career</a>
+                  <a onClick={goToCareers} className="cursor-pointer">
+                    Career
+                  </a>
                 </li>
                 <li>
-                  <a href="">Contact</a>
+                  <a className="cursor-pointer" onClick={goToContactHead}>
+                    Contact
+                  </a>
                 </li>
               </ul>
             </div>
-            <div>
+            {/* <div>
               <ul>
                 <li>
                   <h5>Developers</h5>
@@ -151,20 +215,20 @@ export const FooterSection = () => {
                   <a href="">Meraas</a>
                 </li>
               </ul>
-            </div>
+            </div> */}
             <div>
               <ul className="footer-connects">
                 <li>
                   <h5>connect with us</h5>
                 </li>
                 <li>
-                  <a href="">
+                  <a href="tel:+971555769195">
                     <IoIosCall className="text-[1.4rem]" />
-                    +971 4 554 6904
+                    +971 55 576 9195
                   </a>
                 </li>
                 <li>
-                  <a href="">
+                  <a href="mailto:info@dnkre.com">
                     <MdEmail className="text-[1.2rem] mr-[3px]" />
                     info@dnkre.com
                   </a>
@@ -185,11 +249,13 @@ export const FooterSection = () => {
           © Copyright 2022.All Rights Reserved | designed by RNK Real estate
         </p>
       </div>
-      {showButton && <div class="scrollTop-widget">
-        <div class="scrollTop animate-bounce" onClick={handleScrollTop}>
-          <IoIosArrowUp className="arrow-top " />
+      {showButton && (
+        <div class="scrollTop-widget">
+          <div class="scrollTop animate-bounce" onClick={handleScrollTop}>
+            <IoIosArrowUp className="arrow-top " />
+          </div>
         </div>
-      </div>}
+      )}
     </footer>
   );
 }

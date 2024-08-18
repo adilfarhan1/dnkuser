@@ -23,12 +23,24 @@ export const userUserServices = () => {
         return response.data
     }
 
+    const contactData = async (data) => {
+        const response = await axiosPrivate.post('/user/send', data)
+        return response.data
+    }
+
+    const careerMail = async (data) => {
+        const response = await axiosPrivate.post('/user/careersmail', data)
+        return response.data
+    }
+
     return {
         loginUser,
         getUser,
         logoutUser,
         putUser,
         forgotPass,
+        contactData,
+        careerMail,
     }
 
 }

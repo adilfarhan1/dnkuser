@@ -51,6 +51,30 @@ export const DashboardLayout = () => {
             >
               Add Team
             </button>
+            <button
+              onClick={() => navigate("/dashboard/ad")}
+              className={`${
+                location.pathname == "/dashboard/ad" && "active"
+              } site-sub-btn text-left bg-[#0F2C45] w-full !border-[#1C1D22]`}
+            >
+              Add Ad
+            </button>
+            <button
+              onClick={() => navigate("/dashboard/review")}
+              className={`${
+                location.pathname == "/dashboard/review" && "active"
+              } site-sub-btn text-left bg-[#0F2C45] w-full !border-[#1C1D22]`}
+            >
+              Add Review
+            </button>
+            <button
+              onClick={() => navigate("/dashboard/partner")}
+              className={`${
+                location.pathname == "/dashboard/partner" && "active"
+              } site-sub-btn text-left bg-[#0F2C45] w-full !border-[#1C1D22]`}
+            >
+              Add Partner
+            </button>
           </div>
         </div>
         <div className="container justify-start max-w-[1240px] mx-auto px-4">

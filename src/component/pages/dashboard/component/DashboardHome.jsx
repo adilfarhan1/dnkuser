@@ -31,14 +31,14 @@ export const DashboardHome = () => {
         >
           Buy
         </button>
-        <button
+        {/* <button
           onClick={() => setParams("sell")}
           className={`${
             params == "sell" && "active"
           } site-sub-btn text-left bg-[#1C1D22] w-full !border-[#1C1D22]`}
         >
           Sell
-        </button>
+        </button> */}
         <button
           onClick={() => setParams("rent")}
           className={`${

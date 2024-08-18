@@ -6,8 +6,15 @@ import capitalImprovements from "../../../../assets/icons/capitalImprovement.svg
 import financeRealEstate from "../../../../assets/icons/FinanceRealEstate.svg";
 import financialReporting from "../../../../assets/icons/FinancialReporting.svg";
 import recoverAssetValue from "../../../../assets/icons/RecoverAssetValue.svg";
+import { useNavigate } from 'react-router-dom';
 
 export const ServiceSection = () => {
+  const navigate = useNavigate()
+
+  const goToServices = () => {
+    navigate("/services")
+  }
+  
   return (
     <div className="w-full bg-[#121218] flex items-center justify-center">
       <div className="serviceSection container max-w-[1240px] py-5  px-4  md:py-9">
@@ -41,7 +48,10 @@ export const ServiceSection = () => {
                   </p>
                 </div>
 
-                <button className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto">
+                <button
+                  onClick={goToServices}
+                  className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto"
+                >
                   View More
                   <MdOutlineKeyboardDoubleArrowRight className="arrow-r-bounce text-[0.9rem] md:text-[1.3rem]" />
                 </button>
@@ -76,7 +86,10 @@ export const ServiceSection = () => {
                   </p>
                 </div>
 
-                <button className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto">
+                <button
+                  onClick={goToServices}
+                  className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto"
+                >
                   View More
                   <MdOutlineKeyboardDoubleArrowRight className="arrow-r-bounce text-[0.9rem] md:text-[1.3rem]" />
                 </button>
@@ -112,7 +125,10 @@ export const ServiceSection = () => {
                   </p>
                 </div>
 
-                <button className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto">
+                <button
+                  onClick={goToServices}
+                  className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto"
+                >
                   View More
                   <MdOutlineKeyboardDoubleArrowRight className="arrow-r-bounce text-[0.9rem] md:text-[1.3rem]" />
                 </button>
@@ -147,7 +163,10 @@ export const ServiceSection = () => {
                   </p>
                 </div>
 
-                <button className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto">
+                <button
+                  onClick={goToServices}
+                  className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto"
+                >
                   View More
                   <MdOutlineKeyboardDoubleArrowRight className="arrow-r-bounce text-[0.9rem] md:text-[1.3rem]" />
                 </button>
@@ -182,7 +201,10 @@ export const ServiceSection = () => {
                   </p>
                 </div>
 
-                <button className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto">
+                <button
+                  onClick={goToServices}
+                  className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto"
+                >
                   View More
                   <MdOutlineKeyboardDoubleArrowRight className="arrow-r-bounce text-[0.9rem] md:text-[1.3rem]" />
                 </button>

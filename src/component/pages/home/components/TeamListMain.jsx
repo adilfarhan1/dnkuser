@@ -11,7 +11,9 @@ export const TeamListMain = (props) => {
   const [searchedList, setSearchedList] = useState([]);
   const [teamList, setTeamList] = useState([]);
   const [imageUrl, setImageUrl] = useState();
-  const { getTeamList } = userTeamServices();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { getTeamPublicList } = userTeamServices();
   const navigate = useNavigate();
 
 
@@ -26,20 +28,33 @@ export const TeamListMain = (props) => {
 
     const getData = async () => {
         try {
-            const response = await getTeamList();
+            const response = await getTeamPublicList();
           if (response.success) {
             setTeamList(response.data);
           }
         
         } catch (err) {
           console.error("Failed to fetch team list", err);
+        } finally {
+          setLoading(false);
         }
   }
-  
-  const handleCardClick = (id) => {
-    navigate(`/team-detail/${id}`);
+
+  if (loading) {
+    return (
+      <div className="bg-[#040406] text-center">
+        <p className="m-auto loader !w-[24px] !h-[24px]"></p>
+      </div>
+    ); // Loading indicator
   }
 
+  if (error) {
+    return <div>{error}</div>; // Display error message
+  }
+  const handleCardClick = (id) => {
+    console.log("clickid:", id);
+    navigate(`/team-detail/${id}`);
+  }
     var settings = {
       dots: true,
       infinite: true,
@@ -76,8 +91,8 @@ export const TeamListMain = (props) => {
     <div>
       <Slider {...settings}>
         {searchedList.length > 0 ? (
-          searchedList.map((data, i) => (
-            <div className="p-4" key={i} onClick={() => handleCardClick(data.id)}>
+          searchedList.map((data) => (
+            <div className="p-4" key={data._id}  onClick={() => handleCardClick(data._id)}>
               <div class="max-w-max bg-[#040406] cursor-pointer team-card">
                 <img
                   class="rounded-t-lg w-[70%] xl:w-[100%] md:w-[90%] m-auto"

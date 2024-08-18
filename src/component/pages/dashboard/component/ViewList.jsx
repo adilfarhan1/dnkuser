@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from "react-router-dom";
 import { MdModeEditOutline } from "react-icons/md";
 import { useProjectServices } from '../../../../services/projectServices';
-
+import { MdDelete } from "react-icons/md";
 
 
 export const ViewList = (props) => {
     const { createProject, setCreateProject, submit, params } = props; 
     const [projectList, setProjectList] = useState([])
     const [searchedList, setSearchedList] = useState([])
-    const { getProjectList, putProjectList } = useProjectServices()
+    const { getProjectList, putProjectList , deleteProjectList } = useProjectServices()
 
     useEffect(() => {
       let tempList = projectList
@@ -30,7 +30,8 @@ export const ViewList = (props) => {
         try {
             const response = await getProjectList()
             if (response.success)
-                setProjectList(response.data)
+            setProjectList(response.data)
+          console.log('project data - ',response.data)
         } catch (err) {
         }
     }
@@ -39,7 +40,7 @@ export const ViewList = (props) => {
         setCreateProject({
           id: data._id,
           projectname: data.projectname,
-          image: data.image,
+          thumbnail: data.thumbnail,
           developer: data.developer,
           type: data.type,
           bedroom: data.bedroom,
@@ -68,6 +69,19 @@ export const ViewList = (props) => {
         });
   }
 
+    const handleDelete = async (id) => {
+      try {
+        const response = await deleteProjectList(id);
+        if (response.success) {
+          setProjectList((prevList) => prevList.filter((item) => item._id !== id))
+        } else {
+          console.error('Failed to delete project')
+        }
+      } catch (err) {
+        console.error('Error deleting project:', err)
+      }
+    };
+
     return (
       <div>
         <table className="w-full border overflow-auto">
@@ -77,6 +91,7 @@ export const ViewList = (props) => {
               <th>Developer</th>
               <th>Type</th>
               <th>Stutus</th>
+              {location.pathname == "/dashboard/addProject" && <th></th>}
               {location.pathname == "/dashboard/addProject" && <th></th>}
             </tr>
           </thead>
@@ -89,15 +104,26 @@ export const ViewList = (props) => {
                   <td>{data.type}</td>
                   <td>{data.status}</td>
                   {location.pathname == "/dashboard/addProject" && (
-                    <td className='text-center'>
-                      <MdModeEditOutline onClick={()=>handleEdit(data)} className="text-[1rem] text-center m-auto cursor-pointer" />
+                    <td className="text-center">
+                      <MdModeEditOutline
+                        onClick={() => handleEdit(data)}
+                        className="text-[1rem] text-center m-auto cursor-pointer"
+                      />
+                    </td>
+                  )}
+                  {location.pathname == "/dashboard/addProject" && (
+                    <td className="text-center">
+                      <MdDelete
+                        onClick={() => handleDelete(data._id)}
+                        className="text-[1rem] text-center m-auto cursor-pointer"
+                      />
                     </td>
                   )}
                 </tr>
               ))
             ) : (
-              <div className='flex justify-center'>
-                <p className='text-center m-auto'>Not task created yet</p>
+              <div className="flex justify-center">
+                <p className="text-center m-auto">Not task created yet</p>
               </div>
             )}
           </tbody>

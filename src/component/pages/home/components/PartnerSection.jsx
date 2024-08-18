@@ -1,13 +1,50 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Slider from "react-slick";
-import Emaar from "../../../../assets/partners/emaar.svg"
-import Damac from "../../../../assets/partners/damac.svg"
-import Sobha from "../../../../assets/partners/sobha.svg"
-import Aldar from "../../../../assets/partners/aldar.svg";
-import DubaiPro from "../../../../assets/partners/dubaiPro.svg";
-import Danube from "../../../../assets/partners/danube.svg";
+import partnerLogo from '../../../../assets/icons/addlogo.svg'
+import { userPartnerServices } from '../../../../services/partnerServices';
+import { URL } from '../../../../url/axios';
 
-export const PartnerSection =()=> {
+export const PartnerSection = (props) => {
+  const { params } = props;
+  const [searchedList, setSearchedList] = useState([]);
+  const [partnerList, setPartnerList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { getPartner } = userPartnerServices();
+
+
+  useEffect(() => {
+    let tempList = partnerList;
+    setSearchedList(tempList)
+  }, [params, partnerList]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const response = await getPartner();
+      setPartnerList(response.data);
+    } catch (err) {
+      console.error("Failed to fetch team list", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+if (loading) {
+  return (
+    <div className="bg-[#040406] text-center">
+      <p className="m-auto loader !w-[24px] !h-[24px]"></p>
+    </div>
+  ); // Loading indicator
+}
+
+if (error) {
+  return <div>{error}</div>; // Display error message
+}
+
     var settings = {
       dots: false,
       arrows: false,
@@ -46,48 +83,24 @@ export const PartnerSection =()=> {
         <div className="relative">
           <span className="bg-gradient-to-r from-[#040406] from-10% to-transparent absolute left-0 top-0  h-[130px] w-[150px] z-20"></span>
           <Slider {...settings} className="p-4 pt-6 relative">
-            <div className="!flex !items-center !justify-center w-[160px]  h-[70px] px-2 xl:px-0">
-              <img
-                src={Emaar}
-                alt="partner logo"
-                className="w-fit opacity-80 hover:opacity-100"
-              />
-            </div>
-            <div className="!flex !items-center !justify-center w-[160px]  h-[70px] px-2 xl:px-0">
-              <img
-                src={Damac}
-                alt="partner logo"
-                className="w-fit opacity-80 hover:opacity-100"
-              />
-            </div>
-            <div className="!flex !items-center !justify-center w-[160px]  h-[70px] px-2 xl:px-0">
-              <img
-                src={Sobha}
-                alt="partner logo"
-                className="w-fit opacity-80 hover:opacity-100"
-              />
-            </div>
-            <div className="!flex !items-center !justify-center w-[160px]  h-[70px] px-2 xl:px-0">
-              <img
-                src={Aldar}
-                alt="partner logo"
-                className="w-fit opacity-80 hover:opacity-100"
-              />
-            </div>
-            <div className="!flex !items-center !justify-center w-[160px]  h-[70px] px-2 xl:px-0">
-              <img
-                src={DubaiPro}
-                alt="partner logo"
-                className="w-fit opacity-80 hover:opacity-100"
-              />
-            </div>
-            <div className="!flex !items-center !justify-center w-[160px] h-[70px] px-2 xl:px-0">
-              <img
-                src={Danube}
-                alt="partner logo"
-                className="w-fit opacity-80 hover:opacity-100"
-              />
-            </div>
+            {searchedList.length > 0 ? (
+              searchedList.map((data) => (
+                <div
+                  key={data._id}
+                  className="!flex !items-center !justify-center w-[160px]  h-[70px] px-2 xl:px-0"
+                >
+                  <img
+                    src={data.image ? URL + data.image : partnerLogo}
+                    alt="partner logo"
+                    className="w-fit opacity-80 hover:opacity-100"
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="flex justify-center">
+                <p className="text-center m-auto">No team created yet</p>
+              </div>
+            )}
           </Slider>
           <span className="bg-gradient-to-l from-[#040406] from-10% to-transparent absolute right-0 top-0  h-[130px] w-[150px] z-20"></span>
         </div>

@@ -6,8 +6,15 @@ import ashik from "../../../../assets/team-img/ashik.png";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import { userTeamServices } from '../../../../services/teamServices';
 import TeamListMain from './TeamListMain';
+import { useNavigate } from 'react-router-dom';
 
 export const TeamSection = () => {
+  const navigate = useNavigate();
+
+   //navigation
+  const goToTeamPage = () => {
+    navigate("/team")
+  }
     
   return (
     <div className="w-full bg-[#040406] flex items-center justify-center px-4 xl:px-0">
@@ -20,91 +27,10 @@ export const TeamSection = () => {
           variety of clients.
         </p>
         <TeamListMain />
-        {/* Asad Khan */}
-        {/* <div className="p-4">
-            <div class="max-w-max bg-[#040406] cursor-pointer team-card">
-              <img
-                class="rounded-t-lg w-[70%] xl:w-[100%] md:w-[90%] m-auto"
-                src={asad}
-                alt="team image"
-              />
-              <div class="text-center pt-1">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  Asad Khan
-                </h5>
-                <p class="m-0 font-normal text-gray-700 dark:text-gray-400">
-                  vice president sales
-                </p>
-                <p class="m-0 font-normal text-gray-700 dark:text-gray-400">
-                  English, Arabic, Hindi, German
-                </p>
-              </div>
-            </div>
-          </div> */}
-        {/* Vivek */}
-        {/* <div className="p-4">
-            <div class="max-w-max bg-[#040406] cursor-pointer team-card">
-              <img
-                class="rounded-t-lg w-[70%] xl:w-[100%] md:w-[90%] m-auto"
-                src={vivek}
-                alt="team image"
-              />
-              <div class="text-center pt-1">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  Vivek Nair
-                </h5>
-                <p class="m-0 font-normal text-gray-700 dark:text-gray-400">
-                  vice president sales
-                </p>
-                <p class="m-0 font-normal text-gray-700 dark:text-gray-400">
-                  English, Arabic, Hindi, Malayalam
-                </p>
-              </div>
-            </div>
-          </div> */}
-        {/* emran */}
-        {/* <div className="p-4">
-            <div class="max-w-max bg-[#040406] cursor-pointer team-card">
-              <img
-                class="rounded-t-lg w-[70%] xl:w-[100%] md:w-[90%] m-auto"
-                src={emran}
-                alt="team image"
-              />
-              <div class="text-center pt-1">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  Emran Khan
-                </h5>
-                <p class="m-0 font-normal text-gray-700 dark:text-gray-400">
-                  Sales Director
-                </p>
-                <p class="m-0 font-normal text-gray-700 dark:text-gray-400">
-                  English, Arabic, Hindi
-                </p>
-              </div>
-            </div>
-          </div> */}
-        {/* ashik */}
-        {/* <div className="p-4">
-            <div class="max-w-max bg-[#040406] cursor-pointer team-card">
-              <img
-                class="rounded-t-lg w-[70%] xl:w-[100%] md:w-[90%] m-auto"
-                src={ashik}
-                alt="team image"
-              />
-              <div class="text-center pt-1">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  Ashik KC
-                </h5>
-                <p class="m-0 font-normal text-gray-700 dark:text-gray-400">
-                  Sales Director
-                </p>
-                <p class="m-0 font-normal text-gray-700 dark:text-gray-400">
-                  English, Hindi, German
-                </p>
-              </div>
-            </div>
-          </div> */}
-        <button className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto w-fit">
+        <button
+          onClick={goToTeamPage}
+          className="flex items-center gap-4 text-[#ffff] font-normal text-[0.9rem] mt-4 md:text-[1rem] m-auto w-fit"
+        >
           View More
           <MdOutlineKeyboardDoubleArrowRight className="arrow-r-bounce text-[0.9rem] md:text-[1.3rem]" />
         </button>

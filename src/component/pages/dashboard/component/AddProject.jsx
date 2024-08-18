@@ -7,12 +7,13 @@ import { FaGlasses } from 'react-icons/fa';
 import qrcode from '../../../../assets/icons/qrcode.svg'
 import Swal from 'sweetalert2';
 import cvrImage from '../../../../assets/icons/coverImage.svg'
+import { URL } from '../../../../url/axios';
 
 export const AddProject = (props) => {
   const [err, setErr] = useState(false)
   const initialState = {
     projectname: "",
-    image: "",
+    thumbnail: null,
     developer: "",
     type: "",
     bedroom: "",
@@ -42,7 +43,7 @@ export const AddProject = (props) => {
 
   const [createProject, setCreateProject] = useState(initialState);
   const [imageUrls, setImageUrls] = useState({
-    image: null,
+    thumbnail: null,
     dld: null,
     coverimage: null,
     gallary1: null,
@@ -51,6 +52,7 @@ export const AddProject = (props) => {
   });
 
   const [submit, setSubmit] = useState(false);
+  const [message, setMessage] = useState("");
 
    const handleChange = (e) => {
      if (e.target.value === "") {
@@ -74,13 +76,14 @@ export const AddProject = (props) => {
       const response = await getProjectList(id);
       setCreateProject(response.data);
       setImageUrls({
-        image: response.data.imageUrl?.image || null,
+        thumbnail: response.data.imageUrl?.thumbnail || null,
         dld: response.data.imageUrl?.dld || null,
         coverimage: response.data.imageUrl?.coverimage || null,
         gallary1: response.data.imageUrl?.gallary1 || null,
         gallary2: response.data.imageUrl?.gallary2 || null,
         gallary3: response.data.imageUrl?.gallary3 || null,
       });
+      console.log('images - ',imageUrls)
     } catch (err) {
       console.error("Faild to fetch project details:", err);
     }
@@ -90,6 +93,7 @@ export const AddProject = (props) => {
 
   const handleFileInput = (e) => {
     let field = e?.target?.name;
+    console.log(" image field name-", field);
     const file = e.target.files[0]
     setCreateProject((createProject) => ({ ...createProject, [field]: file }))
      
@@ -97,24 +101,36 @@ export const AddProject = (props) => {
        ...prevState,
        [field]: window.URL.createObjectURL(file),
      }));
+    // setImageUrls((prevState) => ({
+    //   ...prevState,
+    //   [field]: file,
+    // }));
+    console.log('thumbnail image-',imageUrls)
   };
 
-  
-
-  
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const submitData = { ...createProject };
       const formdata = new FormData();
-      for (const [key, value] of Object.entries(submitData))
-        formdata.append(key, value);
+      for (const [key, value] of Object.entries(submitData)) {
+        // formdata.append(key, value);
+        if (value instanceof File || typeof value === 'string') {
+          formdata.append(key, value);
+        } else {
+          Swal.fire("Failed", "Please upload all images!", "error");
+          return;
+        }
+      }
+      console.log("Form -", formdata)
+      // console.log("project id -", createProject);
+     
       let response;
-      if (props.mode === "update" && createProject._id) {
+      if (createProject.id) {
         // For update, ensure that the _id field is included
         submitData._id = createProject.id;
-        response = await putProjectList(createProject._id, formdata);
+        response = await putProjectList(createProject.id, formdata);
       } else {
         // For create, remove the _id field to allow MongoDB to generate a new one
         delete submitData._id;
@@ -122,8 +138,10 @@ export const AddProject = (props) => {
       }
       if (response.success) {
         Swal.fire("Success", "Successfully added/updated", "success");
-        // handleReset()
+        handleReset()
+        setMessage("Please refresh the page");
         setSubmit(!submit);
+        fetchProjectDetails();
       } else {
         Swal.fire("Failed", "Failed to added/updated project", "error");
       }
@@ -163,7 +181,12 @@ export const AddProject = (props) => {
           <label htmlFor="thumbnail" className="cursor-pointer">
             <img
               className="w-[380px] h-[266px]"
-              src={imageUrls?.thumbnail || projectImage}
+              src={
+                imageUrls.thumbnail ||
+                (createProject.thumbnail
+                  ? URL + createProject.thumbnail
+                  : projectImage)
+              }
               alt="user-icon"
             />
           </label>
@@ -186,9 +209,10 @@ export const AddProject = (props) => {
           type="select"
           class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
         >
+          <option value={""}></option>
           <option value={"buy"}>Buy</option>
           <option value={"off-plan"}>Off-Plan</option>
-          <option value={"sell"}>Sell</option>
+          {/* <option value={"sell"}>Sell</option> */}
           <option value={"rent"}>Rent</option>
         </select>
 
@@ -253,7 +277,10 @@ export const AddProject = (props) => {
             <label htmlFor="dldqr" className="cursor-pointer">
               <img
                 className="w-[120px] h-[120px]"
-                src={imageUrls?.dldimage || qrcode}
+                src={
+                  imageUrls.dld ||
+                  (createProject.dld ? URL + createProject.dld : qrcode)
+                }
                 alt="qr-icon"
               />
             </label>
@@ -262,6 +289,7 @@ export const AddProject = (props) => {
               className=""
               onChange={handleFileInput}
               id="dldcode"
+              name="dld"
             />
           </div>
         </div>
@@ -272,7 +300,12 @@ export const AddProject = (props) => {
             <label htmlFor="coverImage" className="cursor-pointer">
               <img
                 className="w-[700px] h-[266px]"
-                src={imageUrls?.coverimage || cvrImage}
+                src={
+                  imageUrls?.coverimage ||
+                  (createProject.coverimage
+                    ? URL + createProject.coverimage
+                    : cvrImage)
+                }
                 alt="cover image"
               />
             </label>
@@ -281,6 +314,7 @@ export const AddProject = (props) => {
               className=""
               onChange={handleFileInput}
               id="coverImage"
+              name="coverimage"
             />
           </div>
         </div>
@@ -311,7 +345,12 @@ export const AddProject = (props) => {
               <label htmlFor="Gallary" className="cursor-pointer">
                 <img
                   className="w-[380px] h-auto"
-                  src={imageUrls?.gallary1 || projectImage}
+                  src={
+                    imageUrls.gallary1 ||
+                    (createProject.gallary1
+                      ? URL + createProject.gallary1
+                      : projectImage)
+                  }
                   alt="gallary image"
                 />
               </label>
@@ -320,6 +359,7 @@ export const AddProject = (props) => {
                 className=""
                 onChange={handleFileInput}
                 id="gallaryImage1"
+                name="gallary1"
               />
             </div>
           </div>
@@ -329,7 +369,12 @@ export const AddProject = (props) => {
               <label htmlFor="gallary" className="cursor-pointer">
                 <img
                   className="w-[380px] h-auto"
-                  src={imageUrls?.gallary2 || projectImage}
+                  src={
+                    imageUrls.gallary2 ||
+                    (createProject.gallary2
+                      ? URL + createProject.gallary2
+                      : projectImage)
+                  }
                   alt="gallary image"
                 />
               </label>
@@ -338,6 +383,7 @@ export const AddProject = (props) => {
                 className=""
                 onChange={handleFileInput}
                 id="gallaryImage2"
+                name="gallary2"
               />
             </div>
           </div>
@@ -347,7 +393,12 @@ export const AddProject = (props) => {
               <label htmlFor="gallary" className="cursor-pointer">
                 <img
                   className="w-[380px] h-auto"
-                  src={imageUrls?.gallary3 || projectImage}
+                  src={
+                    imageUrls.gallary3 ||
+                    (createProject.gallary3
+                      ? URL + createProject.gallary3
+                      : projectImage)
+                  }
                   alt="gallary image"
                 />
               </label>
@@ -356,6 +407,7 @@ export const AddProject = (props) => {
                 className=""
                 onChange={handleFileInput}
                 id="gallaryImage3"
+                name="gallary3"
               />
             </div>
           </div>
@@ -381,15 +433,113 @@ export const AddProject = (props) => {
           rows="5"
           class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
         />
-        <label>Nearby option1</label>
+
+        <label>Location</label>
         <input
-          placeholder="Nearby option1"
+          placeholder="Google map embed a map src= link "
           type="text"
-          name="nearby1"
+          name="location"
           onChange={handleChange}
-          value={createProject.nearby1 || ""}
+          value={createProject.location || ""}
           class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
         />
+
+        <div className="grid grid-cols-3 gap-3">
+          <div>
+            <label>Nearby option1</label>
+            <input
+              placeholder="eg: School"
+              type="text"
+              name="nearby1"
+              onChange={handleChange}
+              value={createProject.nearby1 || ""}
+              class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+            />
+          </div>
+          <div className="col-span-2">
+            <label>Nearby option1 Description</label>
+            <input
+              placeholder="eg: MES School Road,  Uptown Motor CityDistance:  2.59 km"
+              type="text"
+              name="dec1"
+              onChange={handleChange}
+              value={createProject.dec1 || ""}
+              class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div>
+            <label>Nearby option2</label>
+            <input
+              placeholder="eg: School"
+              type="text"
+              name="nearby2"
+              onChange={handleChange}
+              value={createProject.nearby2 || ""}
+              class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+            />
+          </div>
+          <div className="col-span-2">
+            <label>Nearby option2 Description</label>
+            <input
+              placeholder="eg: MES School Road,  Uptown Motor CityDistance:  2.59 km"
+              type="text"
+              name="dec2"
+              onChange={handleChange}
+              value={createProject.dec2 || ""}
+              class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div>
+            <label>Nearby option3</label>
+            <input
+              placeholder="eg: School"
+              type="text"
+              name="nearby3"
+              onChange={handleChange}
+              value={createProject.nearby3 || ""}
+              class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+            />
+          </div>
+          <div className="col-span-2">
+            <label>Nearby option3 Description</label>
+            <input
+              placeholder="eg: MES School Road,  Uptown Motor CityDistance:  2.59 km"
+              type="text"
+              name="dec3"
+              onChange={handleChange}
+              value={createProject.dec3 || ""}
+              class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <div>
+            <label>Nearby option4</label>
+            <input
+              placeholder="eg: School"
+              type="text"
+              name="nearby4"
+              onChange={handleChange}
+              value={createProject.nearby4 || ""}
+              class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+            />
+          </div>
+          <div className="col-span-2">
+            <label>Nearby option4 Description</label>
+            <input
+              placeholder="eg: MES School Road,  Uptown Motor CityDistance:  2.59 km"
+              type="text"
+              name="dec4"
+              onChange={handleChange}
+              value={createProject.dec4 || ""}
+              class="w-full  border border-[#040406] p-[10px] rounded mb-[25px]"
+            />
+          </div>
+        </div>
       </form>
       {err && <span>{err}</span>}
 
@@ -406,6 +556,7 @@ export const AddProject = (props) => {
         >
           {createProject.id ? "Update" : "Submit"}
         </button>
+        {message && <p>{message}</p>}
       </div>
       <div className="mb-4">
         <ViewList {...{ createProject, setCreateProject, submit }} />
