@@ -7,19 +7,33 @@ import { URL } from '../../url/axios';
 
 
 export const PopupModel = ({ onClose }) => {
-  const [adImage, setAdImage] = useState([])
+  const [adImage, setAdImage] = useState(null)
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { getAd } = useProjectServices();
 
   useEffect(() => {
+    
     fetchData();
   },[]);
 
   const fetchData = async () => {
     try {
       const response = await getAd();
+       console.log("API response:", response); 
       if (response.success) {
-        setAdImage(response.data)
+         const adData = response.data;
+
+        if (adData.length > 0) {
+          const adImage = adData[0].image;
+          console.log("Fetched image:", adImage);
+          setAdImage({image: adImage});
+        } else {
+          setError("No Ad found.");
+        }
+        
+      } else {
+       setError("Failed to fetch Ad image.");
       }
       
     } catch (err) {
@@ -38,7 +52,9 @@ export const PopupModel = ({ onClose }) => {
     ); // Loading indicator
   }
 
-
+  if (error) {
+    return <div>{error}</div>; // Display error message
+  }
 
   return (
     <div
@@ -52,7 +68,9 @@ export const PopupModel = ({ onClose }) => {
           <div
             className="bg-cover w-[100%] h-[100%]"
             style={{
-              backgroundImage: `url(${adImage})`,
+              backgroundImage: `url(${
+                adImage?.image ? URL + adImage.image : AdPoster
+              })`,
             }}
           ></div>
           {/* <img src={sohbaPoster} alt="" /> */}

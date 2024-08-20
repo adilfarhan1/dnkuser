@@ -10,6 +10,7 @@ export const AddAdImage = (props) => {
   const [adPoster, setAdPoster] = useState({
     image: null,
   });
+  const [adId, setAdId] = useState(null);
   const [imageUrl, setImageURl] = useState(AdPoster);
    const [submit, setSubmit] = useState(false);
   
@@ -25,10 +26,19 @@ export const AddAdImage = (props) => {
   const fetchAd = async () => {
     try {
       const response = await getAd();
-      const adData = response.data;
-      console.log("image data - ", adData);
-      setAdPoster(adData);
-      setImageURl(URL + adData.image);
+      
+      if (response.success) {
+        const adData = response.data;
+        
+        if (adData.length > 0) {
+          const adImage = adData[0].image;
+          const adId = adData[0]._id
+          setAdPoster({ image: adImage });
+          setAdId(adId)
+          
+          
+        }
+      }
     } catch (err) {
     console.error("Faild to fetch team details:", err);
     }
@@ -49,26 +59,32 @@ export const AddAdImage = (props) => {
   const handleSubmit =  async (e) => {
     e.preventDefault();
     try {
-      // const submitData = { ...adPoster };
-      console.log('ad poster data -', adPoster);
       const formdata = new FormData();
-      for (const [key, value] of Object.entries(adPoster.image)) {
-        console.log("form image data -", value);
-        if (value instanceof File || typeof value === "string") {
-          formdata.append(key, value);
-        } else {
+      // for (const [key, value] of Object.entries(adPoster.image)) {
+      //   console.log("form image data -", value);
+      //   if (value instanceof File || typeof value === "string") {
+      //     formdata.append(key, value);
+      //   } else {
           
-           Swal.fire("Failed", "Please upload image!form", "error");
-           return;
-        }
-        console.log("form data -", formdata);
+      //      Swal.fire("Failed", "Please upload image!form", "error");
+      //      return;
+      //   }
+      //   console.log("form data -", formdata);
         
+      // }
+      if (adPoster.image instanceof File) {
+        formdata.append("image", adPoster.image);
+      } else {
+        Swal.fire("Failed", "Please upload an image!", "error");
+        return;
       }
 
       let response;
-      if (adPoster._id) {
+      if (adId) {
         // submitData._id = adPoster.id;
-        response = await putAd(adPoster._id, formdata);
+        // console.log('submitID:', submit.adId);
+        
+        response = await putAd(adId, formdata);
       } else {
         response = await postAdImage(formdata);
       }
@@ -94,7 +110,7 @@ export const AddAdImage = (props) => {
     <div>
       <div>
         <h1 className="text-[#000] font-semibold">
-          {id ? "Update" : "Add"} Advertisement Image
+          {adId ? "Update" : "Add"} Advertisement Image
         </h1>
       </div>
       <form
@@ -124,7 +140,7 @@ export const AddAdImage = (props) => {
             />
           </div>
           <button className=" bg-[#00A3FF] hover:bg-[#6A9F43] px-[2.5rem] py-[0.4rem] rounded-md text-[#ffffff] mt-6">
-            {adPoster._id ? "Update" : "Submit"}
+            {adId ? "Update" : "Submit"}
           </button>
           {/* {message && <p>{message}</p>} */}
         </div>

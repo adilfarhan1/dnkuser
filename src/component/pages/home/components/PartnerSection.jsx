@@ -14,7 +14,7 @@ export const PartnerSection = (props) => {
 
 
   useEffect(() => {
-    let tempList = partnerList;
+    let tempList = partnerList || [];
     setSearchedList(tempList)
   }, [params, partnerList]);
 
@@ -25,7 +25,7 @@ export const PartnerSection = (props) => {
   const getData = async () => {
     try {
       const response = await getPartner();
-      setPartnerList(response.data);
+      setPartnerList(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error("Failed to fetch team list", err);
     } finally {
@@ -83,7 +83,7 @@ if (error) {
         <div className="relative">
           <span className="bg-gradient-to-r from-[#040406] from-10% to-transparent absolute left-0 top-0  h-[130px] w-[150px] z-20"></span>
           <Slider {...settings} className="p-4 pt-6 relative">
-            {searchedList.length > 0 ? (
+            {Array.isArray(searchedList) && searchedList.length > 0 ? (
               searchedList.map((data) => (
                 <div
                   key={data._id}
